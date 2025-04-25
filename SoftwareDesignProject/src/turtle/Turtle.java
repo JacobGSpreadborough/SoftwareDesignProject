@@ -9,8 +9,8 @@ public class Turtle {
 	private double currentAngle;
 	private boolean penStatus;
 	// speed in pixels per second
-	protected int speed = 100;
-	protected final static double PIXELS_PER_MS = 0.1;
+	protected int speed = 10;
+	protected final static double PIXELS_PER_MS = 0.01;
 
 	public Turtle(Canvas canvas, CartesianCoordinate startingPoint) {
 		this.canvas = canvas;
@@ -40,6 +40,21 @@ public class Turtle {
 	}
 
 	/**
+	 * prevents turtles from moving outside of the window
+	 */
+	public void wrapPosition(int xLimit, int yLimit) {
+
+		if (currentPosition.getX() < 0 || currentPosition.getX() > xLimit) {
+			currentPosition = currentPosition.getX() > 0 ? new CartesianCoordinate(0, currentPosition.getY())
+					: new CartesianCoordinate(xLimit, currentPosition.getY());
+		}
+		if (currentPosition.getY() < 0 || currentPosition.getY() > yLimit) {
+			currentPosition = currentPosition.getY() > 0 ? new CartesianCoordinate(currentPosition.getX(), 0)
+					: new CartesianCoordinate(currentPosition.getX(), yLimit);
+		}
+	}
+
+	/**
 	 * Draws an equilateral triangle with the 'top' corner at the turtle's location
 	 */
 	public void draw() {
@@ -53,7 +68,7 @@ public class Turtle {
 		turn(120);
 		move(10);
 		turn(-30);
-		penStatus = currentPenState;
+		this.penStatus = currentPenState;
 	}
 
 	/**

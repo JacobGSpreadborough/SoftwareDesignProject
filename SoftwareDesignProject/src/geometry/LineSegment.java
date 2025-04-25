@@ -16,7 +16,7 @@ public class LineSegment {
 		this.xDistance = Math.abs(startPoint.getX() - endPoint.getX());
 		this.yDistance = Math.abs(startPoint.getY() - endPoint.getY());
 		this.length = Math.hypot(xDistance, yDistance);
-		this.angle = Math.atan2(xDistance, yDistance);
+		this.angle = Math.toDegrees(Math.atan2(yDistance,xDistance));
 	}
 
 	public CartesianCoordinate getStartPoint() {

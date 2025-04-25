@@ -6,8 +6,24 @@ import geometry.LineSegment;
 
 public class Boid extends Turtle {
 
+	/**
+	 * 
+	 * @param canvas
+	 * @param startingPoint
+	 */
+	
 	public Boid(Canvas canvas, CartesianCoordinate startingPoint) {
 		super(canvas, startingPoint);
+	}
+	
+	/**
+	 * 
+	 * @param canvas
+	 * @param x
+	 * @param y
+	 */
+	public Boid(Canvas canvas, double x, double y) {
+		super(canvas, new CartesianCoordinate(x,y));
 	}
 
 	/**
@@ -19,6 +35,7 @@ public class Boid extends Turtle {
 		putPenDown();
 		move((int) (speed * PIXELS_PER_MS * deltaTime));
 	}
+
 
 	/**
 	 * Returns distance between two boids
