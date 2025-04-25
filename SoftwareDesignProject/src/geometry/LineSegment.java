@@ -4,19 +4,19 @@ public class LineSegment {
 
 	private final CartesianCoordinate startPoint;
 	private final CartesianCoordinate endPoint;
+	private final double xDistance;
+	private final double yDistance;
+	private final double length;
+	private final double angle;
 
 	public LineSegment(CartesianCoordinate startPoint, CartesianCoordinate endPoint) {
 		super();
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;
-	}
-	
-	public double length() {
-		// get distance in both dimensions
-		double xDistance = Math.abs(startPoint.getX() - endPoint.getX());
-		double yDistance = Math.abs(startPoint.getY() - endPoint.getY());
-		// Pythagoras
-		return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+		this.xDistance = Math.abs(startPoint.getX() - endPoint.getX());
+		this.yDistance = Math.abs(startPoint.getY() - endPoint.getY());
+		this.length = Math.hypot(xDistance, yDistance);
+		this.angle = Math.atan2(xDistance, yDistance);
 	}
 
 	public CartesianCoordinate getStartPoint() {
@@ -26,4 +26,13 @@ public class LineSegment {
 	public CartesianCoordinate getEndPoint() {
 		return endPoint;
 	}
+
+	public double getLength() {
+		return length;
+	}
+
+	public double getAngle() {
+		return angle;
+	}
+
 }

@@ -22,7 +22,7 @@ import geometry.LineSegment;
  * 
  * <P>
  * The list of LineSegment's is stored in a collection within the implementation
- * of the class. This collection is now synchronised to deal with concurrent 
+ * of the class. This collection is now synchronised to deal with concurrent
  * accesses to the collection.
  * 
  * <p>
@@ -217,8 +217,8 @@ public final class Canvas extends JPanel {
 	}
 
 	/**
-	 * Wrapper class to add color ability to line segments.
-	 * This helps with the implementation of color and so should not be exposed or subclassed.
+	 * Wrapper class to add color ability to line segments. This helps with the
+	 * implementation of color and so should not be exposed or subclassed.
 	 */
 	private final class LineSegmentInColor {
 		private final LineSegment line;
