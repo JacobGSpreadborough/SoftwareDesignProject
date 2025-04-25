@@ -22,13 +22,14 @@ public class Turtle {
 	/**
 	 * The turtle is moved in its current direction for the given number of pixels.
 	 * If the pen is down when the robot moves, a line will be drawn on the floor.
-	 * An angle of 0 corresponds to facing 'right' on the canvas
+	 * An angle of 0 corresponds to facing 'right' on the canvas, 90 degrees
+	 * corresponds to facing 'up' etc.
 	 * 
 	 * @param distance The number of pixels to move.
 	 */
 	public void move(int distance) {
 		double xDistance = distance * Math.cos(Math.toRadians(currentAngle));
-		double yDistance = distance * Math.sin(Math.toRadians(currentAngle));
+		double yDistance = distance * -Math.sin(Math.toRadians(currentAngle));
 		CartesianCoordinate newPosition = new CartesianCoordinate(currentPosition.getX() + xDistance,
 				currentPosition.getY() + yDistance);
 		// draw line if pen is down
@@ -122,4 +123,7 @@ public class Turtle {
 		return (int) currentPosition.getY();
 	}
 
+	public double getCurrentAngle() {
+		return currentAngle;
+	}
 }

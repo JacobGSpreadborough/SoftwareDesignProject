@@ -13,10 +13,11 @@ public class LineSegment {
 		super();
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;
-		this.xDistance = Math.abs(startPoint.getX() - endPoint.getX());
-		this.yDistance = Math.abs(startPoint.getY() - endPoint.getY());
-		this.length = Math.hypot(xDistance, yDistance);
-		this.angle = Math.toDegrees(Math.atan2(yDistance,xDistance));
+		this.xDistance = endPoint.getX() - startPoint.getX();
+		this.yDistance = endPoint.getY() - startPoint.getY();
+		this.length = Math.hypot(Math.abs(xDistance), Math.abs(yDistance));
+		// angle counterclockwise from the x axis
+		this.angle = -Math.toDegrees((Math.atan2(yDistance, xDistance)));
 	}
 
 	public CartesianCoordinate getStartPoint() {

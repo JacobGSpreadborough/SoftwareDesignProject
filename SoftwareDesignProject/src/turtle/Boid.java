@@ -54,7 +54,9 @@ public class Boid extends Turtle {
 	 * @return angle between this boid and some other boid
 	 */
 	public double angle(Boid boid) {
+		
 		return new LineSegment(this.currentPosition, boid.currentPosition).getAngle();
 	}
+
 
 }

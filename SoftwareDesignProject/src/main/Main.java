@@ -14,14 +14,13 @@ public class Main {
 
 	private static final int WINDOW_SIZE_X = 800;
 	private static final int WINDOW_SIZE_Y = 800;
-	private static final int POPULATION = 3;
+	private static final int POPULATION = 2;
 	public static JFrame window = new JFrame();
 	public static Canvas canvas = new Canvas();
 	public ArrayList<Boid> boids = new ArrayList<Boid>();
 	public Boid centerOfGravity;
 
 	public Main() {
-		boidSetup();
 		windowSetup();
 	}
 
@@ -46,10 +45,15 @@ public class Main {
 		window.add(canvas);
 	}
 
-	
+	public void testBoidAngle() {
+		boids.add(new Boid(canvas, 100,100));
+		boids.add(new Boid(canvas, 50, 50));
+		System.out.println("the angle between boids 1 and 2 is " + boids.get(0).angle(boids.get(1)));
+	}
 
 	public static void main(String[] args) {
 		Main main = new Main();
+		main.testBoidAngle();
 	}
 
 }
