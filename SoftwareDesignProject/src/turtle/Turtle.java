@@ -131,6 +131,10 @@ public class Turtle {
 		this.speed = speed;
 	}
 
+	public CartesianCoordinate getCurrentPosition() {
+		return currentPosition;
+	}
+
 	public int getPositionX() {
 		return (int) currentPosition.getX();
 	}

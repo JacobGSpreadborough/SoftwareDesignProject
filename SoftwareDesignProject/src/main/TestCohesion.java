@@ -1,19 +1,25 @@
 package main;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 
 import drawing.Canvas;
+import geometry.CartesianCoordinate;
 import tools.Utils;
 import turtle.Boid;
 
 public class TestCohesion {
-	private static final int WINDOW_SIZE_X = 800;
-	private static final int WINDOW_SIZE_Y = 800;
+	private static final int WINDOW_SIZE_X = 1000;
+	private static final int WINDOW_SIZE_Y = 1000;
 	private static final double COHESION = 0.8;
+	private static final int POPULATION = 4;
+	private static final int BOID_SIZE = 10;
+	private static final double RANGE = 200;
 	public static JFrame window = new JFrame();
 	public static Canvas canvas = new Canvas();
-	private Boid seeker;
-	private Boid target;
+	private ArrayList<Boid> boids = new ArrayList<Boid>();
 
 	public TestCohesion() {
 		windowSetup();
@@ -28,26 +34,43 @@ public class TestCohesion {
 	}
 
 	private void boidSetup() {
-		target = new Boid(canvas, 200, 400);
-		seeker = new Boid(canvas, 400, 200);
+		for (int i = 0; i < POPULATION; i++) {
+			boids.add(new Boid(canvas, Utils.randomInt(0, WINDOW_SIZE_X), Utils.randomInt(0, WINDOW_SIZE_Y),
+					Color.BLACK));
+		}
+	}
 
+	public CartesianCoordinate localCenterOfGravity(Boid boid) {
+		int xTotal = 0;
+		int yTotal = 0;
+		for (Boid boidB : boids) {
+			if (boidB == boid) {
+				continue;
+			} else if (boid.getCurrentPosition().distance(boidB.getCurrentPosition()) < RANGE) {
+				xTotal += boidB.getPositionX();
+				yTotal += boidB.getPositionY();
+			}
+		}
+		CartesianCoordinate q = new CartesianCoordinate(xTotal / POPULATION, yTotal / POPULATION);
+		//System.out.println(q);
+		return q;
 	}
 
 	public void gameLoop() {
-		double angleToTurn = 0;
 		int deltaTime = 100;
 		while (true) {
-			seeker.unDraw();
-			seeker.update(deltaTime);
-			seeker.wrapPosition(WINDOW_SIZE_Y, WINDOW_SIZE_X);
-			// print current angle of seeker
-			System.out.print("angle to target: " + seeker.angle(target) + " current angle: " + seeker.getCurrentAngle());
-			// calculate angle to turn towards target
-			angleToTurn = (seeker.angle(target) - seeker.getCurrentAngle()) * COHESION;
-			// print angle and turn
-			System.out.println(" angle to turn: " + angleToTurn);
-			seeker.turn((int)angleToTurn);
-			seeker.draw(10);
+			for (Boid boid : boids) {
+				boid.unDraw();
+			}
+			for (Boid boid : boids) {
+				boid.wrapPosition(WINDOW_SIZE_X, WINDOW_SIZE_Y);
+				boid.turn((int) ((boid.getCurrentPosition().angle(localCenterOfGravity(boid)) - boid.getCurrentAngle())
+						* COHESION));
+				boid.update(deltaTime);
+			}
+			for (Boid boid : boids) {
+				boid.draw(BOID_SIZE);
+			}
 			Utils.pause(deltaTime);
 		}
 	}

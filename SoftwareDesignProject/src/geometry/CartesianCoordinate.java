@@ -1,6 +1,5 @@
 package geometry;
 
-import turtle.Boid;
 
 public class CartesianCoordinate {
 
@@ -38,6 +37,10 @@ public class CartesianCoordinate {
 
 	public double getY() {
 		return yPosition;
+	}
+	
+	public String toString() {
+		return "X: " + getX() + " Y: " + getY();
 	}
 
 }
