@@ -11,12 +11,14 @@ public class Turtle {
 	// speed in pixels per second
 	protected int speed = 10;
 	protected final static double PIXELS_PER_MS = 0.01;
+	private static final double COSINE30 = 0.5;
+	private static final double SINE30 = 0.5;
 
 	public Turtle(Canvas canvas, CartesianCoordinate startingPoint) {
 		this.canvas = canvas;
 		this.currentPosition = new CartesianCoordinate(startingPoint.getX(), startingPoint.getY());
 		currentAngle = 0;
-		draw();
+		draw(10);
 	}
 
 	/**
@@ -57,21 +59,16 @@ public class Turtle {
 
 	/**
 	 * Draws an equilateral triangle with the 'top' corner at the turtle's location
+	 * TODO make this good
 	 */
-	public void draw() {
-		// save state of pen to restore after drawing the triangle
-		boolean currentPenState = penStatus;
-		putPenDown();
-		turn(150);
-		move(10);
-		turn(120);
-		move(10);
-		turn(120);
-		move(10);
-		turn(-30);
-		this.penStatus = currentPenState;
+	public void draw(int sideLength) {
+		CartesianCoordinate corner1 = new CartesianCoordinate(currentPosition.getX() + sideLength*COSINE30, currentPosition.getY() + sideLength*SINE30);
+		CartesianCoordinate corner2 = new CartesianCoordinate(currentPosition.getX() - sideLength*COSINE30, currentPosition.getY() + sideLength*SINE30);
+		canvas.drawLineBetweenPoints(currentPosition, corner1);
+		canvas.drawLineBetweenPoints(corner1, corner2);
+		canvas.drawLineBetweenPoints(corner2, currentPosition);
 	}
-
+	
 	/**
 	 * Removes the three lines drawn by the draw() method
 	 */
@@ -89,7 +86,13 @@ public class Turtle {
 	public void turn(int angleToTurn) {
 		currentAngle += angleToTurn;
 		// limits angle to 360 degrees
-		currentAngle -= currentAngle > 360 ? 360 : 0;
+		if (currentAngle > 180) {
+			System.out.println("current angle is greater than 180");
+			currentAngle = -currentAngle;
+		} else if (currentAngle < -180) {
+			System.out.println("current angle is less than -180");
+			currentAngle = -currentAngle;
+		}
 	}
 
 	/**
