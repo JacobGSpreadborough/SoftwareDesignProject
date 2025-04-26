@@ -1,5 +1,7 @@
 package turtle;
 
+import java.awt.Color;
+
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
 
@@ -10,6 +12,7 @@ public class Turtle {
 	private boolean penStatus;
 	// speed in pixels per second
 	protected int speed = 10;
+	private Color color;
 	protected final static double PIXELS_PER_MS = 0.01;
 	private static final double COSINE30 = 0.5;
 	private static final double SINE30 = 0.5;
@@ -17,6 +20,14 @@ public class Turtle {
 	public Turtle(Canvas canvas, CartesianCoordinate startingPoint) {
 		this.canvas = canvas;
 		this.currentPosition = new CartesianCoordinate(startingPoint.getX(), startingPoint.getY());
+		currentAngle = 0;
+		draw(10);
+	}
+
+	public Turtle(Canvas canvas, CartesianCoordinate startingPoint, Color color) {
+		this.canvas = canvas;
+		this.currentPosition = new CartesianCoordinate(startingPoint.getX(), startingPoint.getY());
+		this.color = color;
 		currentAngle = 0;
 		draw(10);
 	}
@@ -62,13 +73,15 @@ public class Turtle {
 	 * TODO make this good
 	 */
 	public void draw(int sideLength) {
-		CartesianCoordinate corner1 = new CartesianCoordinate(currentPosition.getX() + sideLength*COSINE30, currentPosition.getY() + sideLength*SINE30);
-		CartesianCoordinate corner2 = new CartesianCoordinate(currentPosition.getX() - sideLength*COSINE30, currentPosition.getY() + sideLength*SINE30);
-		canvas.drawLineBetweenPoints(currentPosition, corner1);
-		canvas.drawLineBetweenPoints(corner1, corner2);
-		canvas.drawLineBetweenPoints(corner2, currentPosition);
+		CartesianCoordinate corner1 = new CartesianCoordinate(currentPosition.getX() + sideLength * COSINE30,
+				currentPosition.getY() + sideLength * SINE30);
+		CartesianCoordinate corner2 = new CartesianCoordinate(currentPosition.getX() - sideLength * COSINE30,
+				currentPosition.getY() + sideLength * SINE30);
+		canvas.drawLineBetweenPoints(currentPosition, corner1, color);
+		canvas.drawLineBetweenPoints(corner1, corner2, color);
+		canvas.drawLineBetweenPoints(corner2, currentPosition, color);
 	}
-	
+
 	/**
 	 * Removes the three lines drawn by the draw() method
 	 */

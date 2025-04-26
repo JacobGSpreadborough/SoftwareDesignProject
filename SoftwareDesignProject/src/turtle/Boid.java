@@ -1,5 +1,7 @@
 package turtle;
 
+import java.awt.Color;
+
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
 import geometry.LineSegment;
@@ -12,8 +14,8 @@ public class Boid extends Turtle {
 	 * @param startingPoint
 	 */
 	
-	public Boid(Canvas canvas, CartesianCoordinate startingPoint) {
-		super(canvas, startingPoint);
+	public Boid(Canvas canvas, CartesianCoordinate startingPoint, Color color) {
+		super(canvas, startingPoint, color);
 	}
 	
 	/**
@@ -22,8 +24,8 @@ public class Boid extends Turtle {
 	 * @param x
 	 * @param y
 	 */
-	public Boid(Canvas canvas, double x, double y) {
-		super(canvas, new CartesianCoordinate(x,y));
+	public Boid(Canvas canvas, double x, double y, Color color) {
+		super(canvas, new CartesianCoordinate(x,y), color);
 	}
 
 	/**
