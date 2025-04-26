@@ -39,26 +39,6 @@ public class Boid extends Turtle {
 	}
 
 
-	/**
-	 * Returns distance between two boids
-	 * 
-	 * @param boid
-	 * @return distance between this boid and some other boid
-	 */
-	public double distance(Boid boid) {
-		return new LineSegment(this.currentPosition, boid.currentPosition).getLength();
-	}
-
-	/**
-	 * Returns angle between two boids
-	 * 
-	 * @param boid
-	 * @return angle between this boid and some other boid
-	 */
-	public double angle(Boid boid) {
-		
-		return new LineSegment(this.currentPosition, boid.currentPosition).getAngle();
-	}
 
 
 }

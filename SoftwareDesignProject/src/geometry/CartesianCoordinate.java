@@ -1,5 +1,7 @@
 package geometry;
 
+import turtle.Boid;
+
 public class CartesianCoordinate {
 
 	private final double xPosition;
@@ -9,6 +11,25 @@ public class CartesianCoordinate {
 		super();
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
+	}
+	/**
+	 * Returns distance between two points
+	 * 
+	 * @param boid
+	 * @return distance between this point and some other point
+	 */
+	public double distance(CartesianCoordinate point) {
+		return new LineSegment(this, point).getLength();
+	}
+
+	/**
+	 * Returns angle between two point
+	 * 
+	 * @param boid
+	 * @return angle between this point and some other point
+	 */
+	public double angle(CartesianCoordinate point) {
+		return new LineSegment(this, point).getAngle();
 	}
 
 	public double getX() {
