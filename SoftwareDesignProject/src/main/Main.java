@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -18,7 +19,6 @@ public class Main {
 	public static JFrame window = new JFrame();
 	public static Canvas canvas = new Canvas();
 	public ArrayList<Boid> boids = new ArrayList<Boid>();
-	public Boid centerOfGravity;
 
 	public Main() {
 		windowSetup();
@@ -26,16 +26,8 @@ public class Main {
 
 	private void boidSetup() {
 		for (int i = 0; i < POPULATION; i++) {
-			boids.add(new Boid(canvas, Utils.randomInt(0, WINDOW_SIZE_X), Utils.randomInt(0, WINDOW_SIZE_Y)));
+			boids.add(new Boid(canvas, Utils.randomInt(0, WINDOW_SIZE_X), Utils.randomInt(0, WINDOW_SIZE_Y), Color.RED));
 		}
-		// 
-		int xTotal = 0;
-		int yTotal = 0;
-		for(Boid boid : boids) {
-			xTotal += boid.getPositionX();
-			yTotal += boid.getPositionY();
-		}
-		centerOfGravity = new Boid(canvas, xTotal/POPULATION, yTotal/POPULATION);
 	}
 
 	private void windowSetup() {
@@ -46,9 +38,9 @@ public class Main {
 	}
 
 	public void testBoidAngle() {
-		boids.add(new Boid(canvas, 100,100));
-		boids.add(new Boid(canvas, 50, 50));
-		System.out.println("the angle between boids 1 and 2 is " + boids.get(0).angle(boids.get(1)));
+		boids.add(new Boid(canvas, 100,100,Color.BLACK));
+		boids.add(new Boid(canvas, 50, 50,Color.BLACK));
+		// System.out.println("the angle between boids 1 and 2 is " + boids.get(0).angle(boids.get(1)));
 	}
 
 	public static void main(String[] args) {

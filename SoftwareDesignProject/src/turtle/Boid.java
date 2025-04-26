@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
-import geometry.LineSegment;
 
 public class Boid extends Turtle {
 
