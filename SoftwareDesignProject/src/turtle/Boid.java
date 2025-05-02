@@ -33,7 +33,7 @@ public class Boid extends Turtle {
 	 * @param deltaTime
 	 */
 	public void update(int deltaTime) {
-		putPenDown();
+		// putPenDown();
 		move((int) (speed * PIXELS_PER_MS * deltaTime));
 	}
 

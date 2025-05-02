@@ -13,11 +13,11 @@ import turtle.Boid;
 public class MainTest {
 	private static final int WINDOW_SIZE_X = 1000;
 	private static final int WINDOW_SIZE_Y = 1000;
-	private static final double COHESION = 0;
-	private static final double SEPARATION = 0.7;
-	private static final int POPULATION = 1;
+	private static final double COHESION =1;
+	private static final double SEPARATION = 0.5;
+	private static final int POPULATION = 20;
 	private static final int BOID_SIZE = 10;
-	private static final double RANGE = 1000;
+	private static final double RANGE = 300;
 	public static JFrame window = new JFrame();
 	public static Canvas canvas = new Canvas();
 	private ArrayList<Boid> boids = new ArrayList<Boid>();
@@ -41,31 +41,62 @@ public class MainTest {
 		}
 	}
 
-	public CartesianCoordinate localCenterOfGravity(Boid boid) {
+	/**
+	 * Calculates the center of gravity of a local flock around boid, including
+	 * itself
+	 * 
+	 * @param boid
+	 * @return center of gravity of all boids within RANGE pixels of boid
+	 */
+	private CartesianCoordinate localCenterOfGravity(Boid boid) {
 		int xTotal = 0;
 		int yTotal = 0;
+		int localPopulation = 0;
 		for (Boid boidB : boids) {
-			if (boidB == boid) {
-				continue;
-			} else if (boid.getCurrentPosition().distance(boidB.getCurrentPosition()) < RANGE) {
+			if (boid.getCurrentPosition().distance(boidB.getCurrentPosition()) < RANGE) {
+				localPopulation++;
 				xTotal += boidB.getPositionX();
 				yTotal += boidB.getPositionY();
 			}
 		}
-		return new CartesianCoordinate(xTotal / POPULATION, yTotal / POPULATION);
-
+		if (localPopulation <= 1) {
+			return null;
+		}
+		return new CartesianCoordinate(xTotal / localPopulation, yTotal / localPopulation);
 	}
 
+	/**
+	 * 
+	 * @param boid
+	 */
+	private void flocking(Boid boid) {
+		double angleToTurn = 0;
+		try {
+			angleToTurn += ((boid.getCurrentPosition().angle(localCenterOfGravity(boid)) + 180 - boid.getCurrentAngle())
+					* SEPARATION);
+			angleToTurn += ((boid.getCurrentPosition().angle(localCenterOfGravity(boid)) - boid.getCurrentAngle())
+					* COHESION);
+		} catch (NullPointerException npe) {
+			angleToTurn += 0;
+		} finally {
+
+			boid.turn((int) angleToTurn);
+		}
+	}
+
+	/**
+	 * runs the simulation
+	 */
 	public void gameLoop() {
-		int deltaTime = 100;
+		int deltaTime = 50;
 		while (true) {
 			for (Boid boid : boids) {
 				boid.unDraw();
 			}
 			for (Boid boid : boids) {
+				// TODO figure out the correct order for these
 				boid.wrapPosition(WINDOW_SIZE_X, WINDOW_SIZE_Y);
-				boid.turn((int) (((boid.getCurrentPosition().angle(localCenterOfGravity(boid)) + 180) - boid.getCurrentAngle())
-					* SEPARATION));
+				flocking(boid);
 				boid.update(deltaTime);
 			}
 			for (Boid boid : boids) {
@@ -74,7 +105,7 @@ public class MainTest {
 			Utils.pause(deltaTime);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		MainTest test = new MainTest();
 		test.gameLoop();

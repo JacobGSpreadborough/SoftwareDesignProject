@@ -1,6 +1,5 @@
 package geometry;
 
-
 public class CartesianCoordinate {
 
 	private final double xPosition;
@@ -11,6 +10,7 @@ public class CartesianCoordinate {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
 	}
+
 	/**
 	 * Returns distance between two points
 	 * 
@@ -38,7 +38,7 @@ public class CartesianCoordinate {
 	public double getY() {
 		return yPosition;
 	}
-	
+
 	public String toString() {
 		return "X: " + getX() + " Y: " + getY();
 	}
