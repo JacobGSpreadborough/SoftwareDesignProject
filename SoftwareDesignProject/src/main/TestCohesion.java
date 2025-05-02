@@ -14,7 +14,7 @@ public class TestCohesion {
 	private static final int WINDOW_SIZE_X = 1000;
 	private static final int WINDOW_SIZE_Y = 1000;
 	private static final double COHESION = 0.8;
-	private static final int POPULATION = 4;
+	private static final int POPULATION = 10;
 	private static final int BOID_SIZE = 10;
 	private static final double RANGE = 200;
 	public static JFrame window = new JFrame();
@@ -43,17 +43,15 @@ public class TestCohesion {
 	public CartesianCoordinate localCenterOfGravity(Boid boid) {
 		int xTotal = 0;
 		int yTotal = 0;
+		int localPopulation = 0;
 		for (Boid boidB : boids) {
-			if (boidB == boid) {
-				continue;
-			} else if (boid.getCurrentPosition().distance(boidB.getCurrentPosition()) < RANGE) {
+			if (boid.getCurrentPosition().distance(boidB.getCurrentPosition()) < RANGE) {
+				localPopulation++;
 				xTotal += boidB.getPositionX();
 				yTotal += boidB.getPositionY();
 			}
 		}
-		CartesianCoordinate q = new CartesianCoordinate(xTotal / POPULATION, yTotal / POPULATION);
-		//System.out.println(q);
-		return q;
+		return new CartesianCoordinate(xTotal / localPopulation, yTotal / localPopulation);
 	}
 
 	public void gameLoop() {
