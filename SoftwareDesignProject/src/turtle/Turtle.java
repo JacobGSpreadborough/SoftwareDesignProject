@@ -14,8 +14,10 @@ public class Turtle {
 	protected int speed = 10;
 	private Color color;
 	protected final static double PIXELS_PER_MS = 0.01;
-	private static final double COSINE30 = 0.5;
-	private static final double SINE30 = 0.5;
+	// 30 degrees in radians
+	private static final double ONE_OVER_SIX_PI = 0.5235987756;
+	// 60 degrees in radians
+	private static final double ONE_OVER_THREE_PI = 1.0471975512;
 
 	public Turtle(Canvas canvas, CartesianCoordinate startingPoint) {
 		this.canvas = canvas;
@@ -70,13 +72,17 @@ public class Turtle {
 
 	/**
 	 * Draws an equilateral triangle with the 'top' corner at the turtle's location
-	 * TODO make this good
+	 * TODO They're still a little wonky
 	 */
 	public void draw(int sideLength) {
-		CartesianCoordinate corner1 = new CartesianCoordinate(currentPosition.getX() + sideLength * COSINE30,
-				currentPosition.getY() + sideLength * SINE30);
-		CartesianCoordinate corner2 = new CartesianCoordinate(currentPosition.getX() - sideLength * COSINE30,
-				currentPosition.getY() + sideLength * SINE30);
+		double deltaX = sideLength * Math.cos(ONE_OVER_SIX_PI - Math.toRadians(currentAngle));
+		double deltaY = sideLength * Math.sin(ONE_OVER_SIX_PI - Math.toRadians(currentAngle));
+		CartesianCoordinate corner1 = new CartesianCoordinate(currentPosition.getX() + deltaX,
+				currentPosition.getY() + deltaY);
+		deltaX = sideLength * Math.cos(ONE_OVER_THREE_PI + Math.toRadians(currentAngle));
+		deltaY = sideLength * Math.sin(ONE_OVER_THREE_PI + Math.toRadians(currentAngle));
+		CartesianCoordinate corner2 = new CartesianCoordinate(currentPosition.getX() - deltaX,
+				currentPosition.getY() + deltaY);
 		canvas.drawLineBetweenPoints(currentPosition, corner1, color);
 		canvas.drawLineBetweenPoints(corner1, corner2, color);
 		canvas.drawLineBetweenPoints(corner2, currentPosition, color);

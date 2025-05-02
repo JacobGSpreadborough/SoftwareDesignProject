@@ -14,7 +14,7 @@ public class CartesianCoordinate {
 	/**
 	 * Returns distance between two points
 	 * 
-	 * @param boid
+	 * @param point
 	 * @return distance between this point and some other point
 	 */
 	public double distance(CartesianCoordinate point) {
@@ -24,7 +24,7 @@ public class CartesianCoordinate {
 	/**
 	 * Returns angle between two point
 	 * 
-	 * @param boid
+	 * @param point
 	 * @return angle between this point and some other point
 	 */
 	public double angle(CartesianCoordinate point) {
