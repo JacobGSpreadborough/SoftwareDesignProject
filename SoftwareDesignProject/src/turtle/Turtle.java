@@ -11,7 +11,8 @@ public class Turtle {
 	private double currentAngle;
 	private boolean penStatus;
 	// speed in pixels per second
-	protected int speed = 25;
+	protected double speed = 25;
+	private static final double MAX_SPEED = 50;
 	private Color color;
 	protected final static double PIXELS_PER_MS = 0.01;
 	// 30 degrees in radians
@@ -103,16 +104,22 @@ public class Turtle {
 	 * @param angleToTurn The number of degrees to turn.
 	 */
 	public void turn(int angleToTurn) {
-		currentAngle += angleToTurn;
-		// System.out.println("Turning: " + angleToTurn);
-		// limits angle to 360 degrees
-		if (currentAngle > 180) {
-			//System.out.println("current angle is greater than 180");
-			currentAngle = -currentAngle;
-		} else if (currentAngle < -180) {
-			//System.out.println("current angle is less than -180");
-			currentAngle = -currentAngle;
+		// limits angle to +/-180 degrees
+		// System.out.print("original angle: " + angleToTurn);
+		while(angleToTurn > 180) {
+			angleToTurn -= 360;
 		}
+		while(angleToTurn < -180) {
+			angleToTurn += 360;
+		}
+
+		// reduces speed based on magnitude of turn
+		// 180 degree turn -> 0 speed
+		// 0 degreed turn -> full speed
+		speed = MAX_SPEED * (1 - (Math.abs((double)angleToTurn) / 180));
+		// System.out.println(" angle to turn: " + angleToTurn + " speed: " + speed);
+
+		currentAngle += angleToTurn;
 	}
 
 	/**
@@ -130,7 +137,7 @@ public class Turtle {
 		penStatus = true;
 	}
 
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 

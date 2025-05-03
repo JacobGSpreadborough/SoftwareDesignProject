@@ -20,7 +20,7 @@ import tools.Utils;
 import turtle.Boid;
 
 public class MainTest {
-	private static final int WINDOW_SIZE_X = 1000;
+	private static final int WINDOW_SIZE_X = 1800;
 	private static final int WINDOW_SIZE_Y = 1000;
 	private static double cohesion = 0.5;
 	private static double separation = 0.5;
@@ -48,6 +48,7 @@ public class MainTest {
 		lowerPanel.setLayout(new GridLayout(0, 2));
 		window.add(canvas);
 		window.add(lowerPanel, BorderLayout.SOUTH);
+		window.setVisible(true);
 	}
 
 	private void sliderSetup() {
@@ -118,7 +119,7 @@ public class MainTest {
 					Color.BLACK));
 		}
 		for (Boid boid : boids) {
-			boid.turn(Utils.randomInt(-180, 180));
+			// boid.turn(Utils.randomInt(-180, 180));
 		}
 	}
 
@@ -182,7 +183,7 @@ public class MainTest {
 	 * runs the simulation
 	 */
 	public void gameLoop() {
-		int deltaTime = 50;
+		int deltaTime = 10;
 		while (true) {
 			for (Boid boid : boids) {
 				boid.unDraw();
