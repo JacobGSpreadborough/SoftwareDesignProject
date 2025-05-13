@@ -1,32 +1,46 @@
 package obstacle;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
+import geometry.LineSegment;
 
 public class Obstacle {
 
 	private Canvas canvas;
 	private Color color;
+	private final LineSegment[] sides = new LineSegment[4];
+	private final LineSegment top;
+	private final LineSegment bottom;
+	private final LineSegment left;
+	private final LineSegment right;
 	private final CartesianCoordinate topLeftCorner;
-	private final CartesianCoordinate topRightCorner;
-	private final CartesianCoordinate bottomLeftCorner;
-	private final CartesianCoordinate bottomRightCorner;
 	private final int xLength;
 	private final int yLength;
 	private final int area;
-	
-	public Obstacle(Canvas canvas, CartesianCoordinate topLeftCorner,int xLength,int yLength, Color color) {
+
+	public Obstacle(Canvas canvas, CartesianCoordinate topLeftCorner, int xLength, int yLength, Color color) {
 		this.canvas = canvas;
 		this.color = color;
 		this.topLeftCorner = topLeftCorner;
 		this.xLength = xLength;
 		this.yLength = yLength;
 		this.area = xLength * yLength;
-		topRightCorner = new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY());
-		bottomRightCorner = new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY() + yLength);
-		bottomLeftCorner = new CartesianCoordinate(topLeftCorner.getX(), topLeftCorner.getY() + yLength);
+		top = new LineSegment(topLeftCorner,
+				new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY()));
+		bottom = new LineSegment(new CartesianCoordinate(topLeftCorner.getX(), topLeftCorner.getY() + yLength),
+				new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY() + yLength));
+		left = new LineSegment(topLeftCorner,
+				new CartesianCoordinate(topLeftCorner.getX(), topLeftCorner.getY() + yLength));
+		right = new LineSegment(new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY()),
+				new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY() + yLength));
+		sides[0] = top;
+		sides[1] = right;
+		sides[2] = bottom;
+		sides[3] = left;
+
 		draw();
 	}
 
@@ -34,10 +48,7 @@ public class Obstacle {
 	 * draws the obstacle
 	 */
 	public void draw() {
-		canvas.drawLineBetweenPoints(topLeftCorner, topRightCorner, color);
-		canvas.drawLineBetweenPoints(topRightCorner, bottomRightCorner, color);
-		canvas.drawLineBetweenPoints(bottomRightCorner, bottomLeftCorner, color);
-		canvas.drawLineBetweenPoints(bottomLeftCorner, topLeftCorner, color);
+		canvas.drawLineSegments(sides, color);
 	}
 
 	/**
@@ -49,7 +60,7 @@ public class Obstacle {
 		canvas.removeMostRecentLine();
 		canvas.removeMostRecentLine();
 	}
-	
+
 	public int getxLength() {
 		return xLength;
 	}
