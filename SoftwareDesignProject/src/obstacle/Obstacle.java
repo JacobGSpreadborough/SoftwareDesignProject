@@ -11,12 +11,14 @@ public class Obstacle {
 
 	private Canvas canvas;
 	private Color color;
-	private final LineSegment[] sides = new LineSegment[4];
-	private final LineSegment top;
-	private final LineSegment bottom;
-	private final LineSegment left;
-	private final LineSegment right;
+
 	private final CartesianCoordinate topLeftCorner;
+	private final CartesianCoordinate topRightCorner;
+	private final CartesianCoordinate bottomLeftCorner;
+	private final CartesianCoordinate bottomRightCorner;
+
+	private final double radius;
+	public final CartesianCoordinate center;
 	private final int xLength;
 	private final int yLength;
 	private final int area;
@@ -28,19 +30,12 @@ public class Obstacle {
 		this.xLength = xLength;
 		this.yLength = yLength;
 		this.area = xLength * yLength;
-		top = new LineSegment(topLeftCorner,
-				new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY()));
-		bottom = new LineSegment(new CartesianCoordinate(topLeftCorner.getX(), topLeftCorner.getY() + yLength),
-				new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY() + yLength));
-		left = new LineSegment(topLeftCorner,
-				new CartesianCoordinate(topLeftCorner.getX(), topLeftCorner.getY() + yLength));
-		right = new LineSegment(new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY()),
-				new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY() + yLength));
-		sides[0] = top;
-		sides[1] = right;
-		sides[2] = bottom;
-		sides[3] = left;
-
+		this.radius = Math.hypot(xLength / 2, yLength / 2);
+		this.center = new CartesianCoordinate(topLeftCorner.getX() + (xLength / 2),
+				topLeftCorner.getY() + (yLength / 2));
+		topRightCorner = new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY());
+		bottomRightCorner = new CartesianCoordinate(topLeftCorner.getX() + xLength, topLeftCorner.getY() + yLength);
+		bottomLeftCorner = new CartesianCoordinate(topLeftCorner.getX(), topLeftCorner.getY() + yLength);
 		draw();
 	}
 
@@ -48,7 +43,10 @@ public class Obstacle {
 	 * draws the obstacle
 	 */
 	public void draw() {
-		canvas.drawLineSegments(sides, color);
+		canvas.drawLineBetweenPoints(topLeftCorner, topRightCorner, color);
+		canvas.drawLineBetweenPoints(topRightCorner, bottomRightCorner, color);
+		canvas.drawLineBetweenPoints(bottomRightCorner, bottomLeftCorner, color);
+		canvas.drawLineBetweenPoints(bottomLeftCorner, topLeftCorner, color);
 	}
 
 	/**
@@ -75,6 +73,14 @@ public class Obstacle {
 
 	public CartesianCoordinate getTopLeftCorner() {
 		return topLeftCorner;
+	}
+
+	public CartesianCoordinate getCenter() {
+		return center;
+	}
+
+	public double getRadius() {
+		return radius;
 	}
 
 }
