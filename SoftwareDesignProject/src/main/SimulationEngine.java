@@ -222,7 +222,7 @@ public class SimulationEngine {
 	 */
 	private void update(int deltaTime) {
 		for (Boid boid : boids) {
-			boid.wrapPosition();
+			boid.wrapPosition(canvasWidth, canvasHeight);
 			boid.flocking(boids, getCohesion(), getSeparation(), getAlignment(), getRange());
 			boid.avoidObstacles(obstacles);
 			boid.update(deltaTime);
