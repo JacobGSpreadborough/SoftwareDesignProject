@@ -1,7 +1,5 @@
 package geometry;
 
-import turtle.Boid;
-
 public class CartesianCoordinate {
 
 	private final double xPosition;
@@ -41,7 +39,7 @@ public class CartesianCoordinate {
 		}
 		return Math.hypot(xDistance, yDistance);
 	}
-	
+
 	/**
 	 * Returns angle between two point
 	 * 
@@ -53,9 +51,9 @@ public class CartesianCoordinate {
 	}
 
 	public double distanceToLine(LineSegment line) {
-		
-		CartesianCoordinate closestCorner = new CartesianCoordinate(0,0);
-		if(distance(line.getStartPoint()) < distance(line.getEndPoint())) {
+
+		CartesianCoordinate closestCorner = new CartesianCoordinate(0, 0);
+		if (distance(line.getStartPoint()) < distance(line.getEndPoint())) {
 			closestCorner = line.getStartPoint();
 		} else if (distance(line.getStartPoint()) > distance(line.getEndPoint())) {
 			closestCorner = line.getEndPoint();
