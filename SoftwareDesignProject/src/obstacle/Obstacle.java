@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
-import main.SimulationObject;
+import simulationObject.SimulationObject;
 
 public class Obstacle implements SimulationObject {
 

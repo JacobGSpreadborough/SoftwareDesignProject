@@ -6,8 +6,8 @@ import java.util.List;
 
 import drawing.Canvas;
 import geometry.CartesianCoordinate;
-import main.SimulationObject;
 import obstacle.Obstacle;
+import simulationObject.SimulationObject;
 
 public class Boid extends Turtle implements SimulationObject {
 

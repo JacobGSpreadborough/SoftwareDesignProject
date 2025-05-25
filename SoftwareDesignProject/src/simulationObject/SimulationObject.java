@@ -1,4 +1,4 @@
-package main;
+package simulationObject;
 
 import geometry.CartesianCoordinate;
 
