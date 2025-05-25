@@ -2,6 +2,7 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,7 @@ import drawing.Canvas;
 
 public class SimulationGUI {
 
-	private int WINDOW_SIZE_X = 1800, WINDOW_SIZE_Y = 1000;
+	private final Dimension WINDOW_SIZE = new Dimension(1800, 1000);
 	private JPanel lowerPanel = new JPanel();
 	private JLabel statusMonitor = new JLabel();
 
@@ -45,7 +46,7 @@ public class SimulationGUI {
 		JFrame window = new JFrame();
 
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(getWINDOW_SIZE_X(), getWINDOW_SIZE_Y());
+		window.setSize(WINDOW_SIZE);
 		// make the lower panel a grid with 2 columns
 		lowerPanel.setLayout(new GridLayout(0, 2));
 		lowerPanel.setBackground(Color.GRAY);
@@ -172,14 +173,6 @@ public class SimulationGUI {
 		sliderAndLabel.setBackground(Color.GRAY);
 		slider.setBackground(Color.GRAY);
 		return sliderAndLabel;
-	}
-
-	public int getWINDOW_SIZE_X() {
-		return WINDOW_SIZE_X;
-	}
-
-	public int getWINDOW_SIZE_Y() {
-		return WINDOW_SIZE_Y;
 	}
 
 	public JPanel getLowerPanel() {

@@ -12,6 +12,8 @@ public class Turtle {
 	private boolean penStatus;
 	protected Color color;
 	protected final static double PIXELS_PER_MS = 0.01;
+	private final static double SIZE = 10;
+	private final static double SHARPNESS = 65;
 
 	public Turtle(Canvas canvas, CartesianCoordinate startingPoint) {
 		this.canvas = canvas;
@@ -72,11 +74,11 @@ public class Turtle {
 
 	public void draw() {
 		CartesianCoordinate corner1 = new CartesianCoordinate(
-				currentPosition.getX() - 10 * Math.sin(Math.toRadians(70 - currentAngle)),
-				currentPosition.getY() + 10 * Math.cos(Math.toRadians(70 - currentAngle)));
+				currentPosition.getX() - SIZE * Math.sin(Math.toRadians(SHARPNESS - currentAngle)),
+				currentPosition.getY() + SIZE * Math.cos(Math.toRadians(SHARPNESS - currentAngle)));
 		CartesianCoordinate corner2 = new CartesianCoordinate(
-				currentPosition.getX() - (10 * Math.sin(Math.toRadians(70 + currentAngle))),
-				currentPosition.getY() - (10 * Math.cos(Math.toRadians(70 + currentAngle))));
+				currentPosition.getX() - (SIZE * Math.sin(Math.toRadians(SHARPNESS + currentAngle))),
+				currentPosition.getY() - (SIZE * Math.cos(Math.toRadians(SHARPNESS + currentAngle))));
 
 		canvas.drawLineBetweenPoints(currentPosition, corner1, color);
 		canvas.drawLineBetweenPoints(corner1, corner2, color);

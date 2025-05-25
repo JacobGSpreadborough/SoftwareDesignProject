@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -17,13 +18,12 @@ import turtle.Boid;
 
 public class SimulationEngine {
 
-	private int canvasWidth;
-	private int canvasHeight;
+	private Dimension canvasSize;
 
 	private double cohesion = 0.05;
 	private double separation = 0.05;
 	private double alignment = 0.05;
-	private int population = 30;
+	private int population = 40;
 	private int numObstacles = 3;
 	private double range = 500;
 	private List<Boid> boids = Collections.synchronizedList(new ArrayList<Boid>());
@@ -33,9 +33,8 @@ public class SimulationEngine {
 
 	public SimulationEngine() {
 		gui = new SimulationGUI(canvas, this);
-		canvasWidth = canvas.getWidth();
 		// make sure the simulation window fits with the GUI panel
-		canvasHeight = canvas.getHeight();
+		canvasSize = new Dimension(canvas.getWidth(), canvas.getHeight());
 		obstacleSetup();
 		boidSetup();
 		mouseSetup();
@@ -115,7 +114,7 @@ public class SimulationEngine {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					leftMouseDown = false;
 					// only create the obstacle if the mouse is on the canvas
-					if (e.getY() < canvasHeight && e.getX() < canvasWidth && e.getX() > 0 && e.getY() > 0) {
+					if (e.getY() < canvasSize.height && e.getX() < canvasSize.width && e.getX() > 0 && e.getY() > 0) {
 						// gets distance travelled since the mouse button was pressed
 						int xLength = (int) (e.getX() - mousePosition.getX());
 						int yLength = (int) (e.getY() - mousePosition.getY());
@@ -190,16 +189,17 @@ public class SimulationEngine {
 	 * function to add a boid, making sure it isn't inside of any obstacles
 	 */
 	public void addBoid() {
-		CartesianCoordinate startingPoint = new CartesianCoordinate(Utils.randomInt(0, canvasWidth),
-				Utils.randomInt(0, canvasHeight));
+		CartesianCoordinate startingPoint = new CartesianCoordinate(Utils.randomInt(0, canvasSize.width),
+				Utils.randomInt(0, canvasSize.height));
 		for (Obstacle obstacle : obstacles) {
 			// prevents boids spawning too close to obstacles
-			if (startingPoint.toroidDistance(obstacle.getCenter(), canvasWidth, canvasHeight) < obstacle.getRadius()) {
+			if (startingPoint.toroidDistance(obstacle.getCenter(), canvasSize.width, canvasSize.height) < obstacle
+					.getRadius()) {
 				startingPoint = new CartesianCoordinate(0, 0);
 			}
 		}
 		synchronized (boids) {
-			boids.add(new Boid(canvas, startingPoint, canvasWidth, canvasHeight, Color.BLACK));
+			boids.add(new Boid(canvas, startingPoint, canvasSize, Color.BLACK));
 		}
 	}
 
@@ -222,7 +222,7 @@ public class SimulationEngine {
 	 */
 	private void update(int deltaTime) {
 		for (Boid boid : boids) {
-			boid.wrapPosition(canvasWidth, canvasHeight);
+			boid.wrapPosition(canvasSize.width, canvasSize.height);
 			boid.flocking(boids, getCohesion(), getSeparation(), getAlignment(), getRange());
 			boid.avoidObstacles(obstacles);
 			boid.update(deltaTime);
@@ -260,8 +260,8 @@ public class SimulationEngine {
 			Utils.pause(deltaTime);
 			// print out time elapsed while running the loop
 			double framesPerSecond = 1000 / (System.currentTimeMillis() - startTime);
-			gui.getstatusMonitor().setText("Obstacles: " + numObstacles + " Boids: " + population + " FPS: "
-					+ (int) framesPerSecond);
+			gui.getstatusMonitor()
+					.setText("Obstacles: " + numObstacles + " Boids: " + population + " FPS: " + (int) framesPerSecond);
 		}
 	}
 
@@ -313,11 +313,4 @@ public class SimulationEngine {
 		this.range = range;
 	}
 
-	public void setCanvasWidth(int canvasWidth) {
-		this.canvasWidth = canvasWidth;
-	}
-
-	public void setCanvasHeight(int canvasHeight) {
-		this.canvasHeight = canvasHeight;
-	}
 }
