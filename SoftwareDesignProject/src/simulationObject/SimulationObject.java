@@ -4,7 +4,6 @@ import geometry.CartesianCoordinate;
 
 public interface SimulationObject {
 	
-
 	public void draw();
 	
 	public void unDraw(); 

@@ -14,6 +14,12 @@ public class Predator extends Boid implements SimulationObject{
 		super(canvas, startingPoint, canvasSize, color);
 	}
 	
+	/**
+	 * turns toward the nearest boid
+	 * 
+	 * @param flock
+	 * @param hunting
+	 */
 	public void chaseBoids(List<Boid> flock, double hunting) {
 		double angleToTurn = currentPosition.angle(nearestBoid(flock).currentPosition);
 		turn((int)(angleToTurn * hunting));

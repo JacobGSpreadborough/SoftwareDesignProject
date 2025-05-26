@@ -16,32 +16,18 @@ public class Boid extends Turtle implements SimulationObject {
 	private Dimension canvasSize;
 	private double collisionRadius;
 
-	/**
-	 * 
-	 * @param canvas
-	 * @param startingPoint
-	 * @param canvasSize
-	 * @param color
-	 */
 	public Boid(Canvas canvas, CartesianCoordinate startingPoint, Dimension canvasSize, Color color) {
 		super(canvas, startingPoint, color);
 		this.canvasSize = canvasSize;
 	}
 
-/**
- * 
- * @param canvas
- * @param x
- * @param y
- * @param canvasSize
- * @param color
- */
 	public Boid(Canvas canvas, double x, double y, Dimension canvasSize, Color color) {
 		super(canvas, new CartesianCoordinate(x, y), color);
 		this.canvasSize = canvasSize;
 	}
 
 	/**
+	 * calculates the angle a boid should turn based on flocking parameters and locations of flockmates 
 	 * 
 	 * @param flock
 	 * @param cohesion
@@ -62,6 +48,7 @@ public class Boid extends Turtle implements SimulationObject {
 	}
 
 	/**
+	 * calculates the angle a boid should turn away from an obstacle
 	 * 
 	 * @param obstacles
 	 */
@@ -76,11 +63,13 @@ public class Boid extends Turtle implements SimulationObject {
 	}
 
 	/**
+	 * finds the nearest boid in the flock
 	 * 
 	 * @param flock
-	 * @return
+	 * @return closest other boid
 	 */
 	public Boid nearestBoid(List<Boid> flock) {
+		// defaults to the first boid, defaulting to itself or null caused bugs
 		Boid nearestBoid = flock.get(0);
 		double min = currentPosition.toroidDistance(nearestBoid.currentPosition, canvasSize.width, canvasSize.height);
 		for (Boid boid : flock) {
@@ -115,10 +104,11 @@ public class Boid extends Turtle implements SimulationObject {
 	}
 
 	/**
+	 * calculates average angle for alignment
 	 * 
 	 * @param flock
 	 * @param range
-	 * @return
+	 * @return average angle of a flock withing range
 	 */
 	private double localAverageAngle(List<Boid> flock, double range) {
 		double totalAngle = 0;
@@ -156,9 +146,12 @@ public class Boid extends Turtle implements SimulationObject {
 	}
 
 	@Override
+	/**
+	 * checks if the boid and the object's collision radii overlap
+	 */
 	public boolean collisionCheck(SimulationObject object) {
-		return (currentPosition.toroidDistance(object.getPosition(), canvasSize.width,
-				canvasSize.height)) < collisionRadius;
+		return ((currentPosition.toroidDistance(object.getPosition(), canvasSize.width,
+				canvasSize.height)) - object.getCollisionRadius()) < collisionRadius;
 	}
 
 	@Override

@@ -37,13 +37,84 @@ public class SimulationEngine {
 		canvasSize = new Dimension(canvas.getWidth(), canvas.getHeight());
 		obstacleSetup();
 		boidSetup();
+		// make absolutely sure the obstacles are set up before allowing the mouse to
+		// interfere
+		Utils.pause(10);
 		mouseSetup();
 	}
 
+	/**
+	 * runs the simulation
+	 * 
+	 * @param deltaTime
+	 */
+	public void start(int deltaTime) {
+		while (true) {
+			long startTime = System.currentTimeMillis();
+			synchronized (obstacles) {
+				synchronized (boids) {
+					clearScreen();
+					update(10);
+					render();
+				}
+			}
+			Utils.pause(deltaTime);
+			// print out time elapsed while running the loop
+			double framesPerSecond = 1000 / (System.currentTimeMillis() - startTime);
+			gui.getstatusMonitor()
+					.setText("Obstacles: " + numObstacles + " Boids: " + population + " FPS: " + (int) framesPerSecond);
+		}
+	}
+
+	/**
+	 * draw objects on screen
+	 */
+	private void render() {
+		for (Boid boid : boids) {
+			boid.draw();
+		}
+		for (Obstacle obstacle : obstacles) {
+			obstacle.draw();
+		}
+	}
+
+	/**
+	 * update movement
+	 * 
+	 * @param deltaTime
+	 */
+	private void update(int deltaTime) {
+		for (Boid boid : boids) {
+			boid.wrapPosition(canvasSize.width, canvasSize.height);
+			boid.flocking(boids, getCohesion(), getSeparation(), getAlignment(), getRange());
+			boid.avoidObstacles(obstacles);
+			boid.update(deltaTime);
+		}
+	}
+
+	/**
+	 * clear everything off the screen
+	 */
+	private void clearScreen() {
+		for (Boid boid : boids) {
+			boid.unDraw();
+		}
+		for (Obstacle obstacle : obstacles) {
+			obstacle.unDraw();
+		}
+
+	}
+
+	/**
+	 * sets up the mouse for interacting with the simulation
+	 */
 	private void mouseSetup() {
 		canvas.addMouseMotionListener(new MouseMotionListener() {
 
 			@Override
+			/**
+			 * 
+			 */
 			public void mouseDragged(MouseEvent e) {
 				// do nothing
 			}
@@ -200,68 +271,6 @@ public class SimulationEngine {
 		}
 		synchronized (boids) {
 			boids.add(new Boid(canvas, startingPoint, canvasSize, Color.BLACK));
-		}
-	}
-
-	/**
-	 * draw objects on screen
-	 */
-	private void render() {
-		for (Boid boid : boids) {
-			boid.draw();
-		}
-		for (Obstacle obstacle : obstacles) {
-			obstacle.draw();
-		}
-	}
-
-	/**
-	 * update movement
-	 * 
-	 * @param deltaTime
-	 */
-	private void update(int deltaTime) {
-		for (Boid boid : boids) {
-			boid.wrapPosition(canvasSize.width, canvasSize.height);
-			boid.flocking(boids, getCohesion(), getSeparation(), getAlignment(), getRange());
-			boid.avoidObstacles(obstacles);
-			boid.update(deltaTime);
-		}
-	}
-
-	/**
-	 * clear everything off the screen
-	 */
-	private void clearScreen() {
-		for (Boid boid : boids) {
-			boid.unDraw();
-		}
-		for (Obstacle obstacle : obstacles) {
-			obstacle.unDraw();
-		}
-
-	}
-
-	/**
-	 * runs the simulation
-	 * 
-	 * @param deltaTime
-	 */
-	public void start(int deltaTime) {
-		while (true) {
-			long startTime = System.currentTimeMillis();
-			synchronized (obstacles) {
-				synchronized (boids) {
-					clearScreen();
-					update(10);
-					render();
-				}
-			}
-			Utils.pause(deltaTime);
-			// print out time elapsed while running the loop
-			double framesPerSecond = 1000 / (System.currentTimeMillis() - startTime);
-			gui.getstatusMonitor()
-					.setText("Obstacles: " + numObstacles + " Boids: " + population + " FPS: " + (int) framesPerSecond);
 		}
 	}
 

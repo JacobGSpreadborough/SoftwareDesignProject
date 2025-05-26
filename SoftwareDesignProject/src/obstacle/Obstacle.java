@@ -47,6 +47,9 @@ public class Obstacle implements SimulationObject {
 	}
 
 	@Override
+	/**
+	 * checks if an object is inside the obstacle
+	 */
 	public boolean collisionCheck(SimulationObject object) {
 		CartesianCoordinate point = object.getPosition();
 		if (point.getX() >= topLeftCorner.getX() && point.getX() <= topRightCorner.getX()

@@ -17,6 +17,8 @@ public class Utils {
 	}
 	/**
 	 * 
+	 * outputs a random value in a specified range
+	 * 
 	 * @param min Minimum output value
 	 * @param max Maximum output value
 	 * @return random integer between min and max

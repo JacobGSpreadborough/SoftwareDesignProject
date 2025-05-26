@@ -50,18 +50,6 @@ public class CartesianCoordinate {
 		return new LineSegment(this, point).getAngle();
 	}
 
-	public double distanceToLine(LineSegment line) {
-
-		CartesianCoordinate closestCorner = new CartesianCoordinate(0, 0);
-		if (distance(line.getStartPoint()) < distance(line.getEndPoint())) {
-			closestCorner = line.getStartPoint();
-		} else if (distance(line.getStartPoint()) > distance(line.getEndPoint())) {
-			closestCorner = line.getEndPoint();
-		}
-		System.out.println("closest corner is: " + closestCorner);
-		return distance(closestCorner) * Math.sin(Math.toRadians(angle(closestCorner)));
-	}
-
 	public double getX() {
 		return xPosition;
 	}
